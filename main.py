@@ -17,9 +17,10 @@ def join_prices(
 
 
 if __name__ == "__main__":
-    site_prices: pd.DataFrame = get_site_prices()
-    site_prices.to_excel("site_prices.xlsx", index=False, engine="xlsxwriter")
-    # db_prices: pd.DataFrame = get_db_prices()
+    # site_prices: pd.DataFrame = get_site_prices()
+    # site_prices.to_excel("site_prices.xlsx", index=False, engine="xlsxwriter")        # TODO: Remove before deploy
+    db_prices: pd.DataFrame = get_db_prices()
+    print(db_prices)
     # joined_data = join_prices(site_prices, db_prices)
     # compared_prices = compare_prices(joined_data)
     # compared_prices = pd.to_excel("compared_prices", index=False, engine="xlsxwriter")
