@@ -6,6 +6,43 @@ from time import sleep
 from dotenv import load_dotenv
 from os import getenv
 
+from icecream import ic
+
+
+def clean_data(data: pd.DataFrame) -> pd.DataFrame:
+    data.to_excel("raw_site_data.xlsx", index=False, engine="xlsxwriter")
+    data[
+            ["Высота, мм", 
+            "Ширина, мм", 
+            "Глубина, мм", 
+            "Розница Москва Скид", 
+            "Розница Сибирь Скид"]
+        ] = \
+            data[
+                ["Высота, мм", 
+                "Ширина, мм", 
+                "Глубина, мм", 
+                "Розница Москва Скид", 
+                "Розница Сибирь Скид"]
+            ].fillna(0)
+    
+    data = data.astype(         ### walkaround for ValueError: invalid literal for int() with base 10
+        {"Высота, мм": "float", 
+         "Ширина, мм": "float", 
+         "Глубина, мм": "float", 
+         "Розница Москва Скид": "float", 
+         "Розница Сибирь Скид": "float"}
+    )
+    data = data.astype(
+        {"Высота, мм": "int64", 
+         "Ширина, мм": "int64", 
+         "Глубина, мм": "int64", 
+         "Розница Москва Скид": "int64", 
+         "Розница Сибирь Скид": "int64"}
+    )
+    data["Цвет профиля"] = data["Цвет профиля"].str.replace(" профиль", "")
+    return data
+
 
 def normalize_json(data: dict) -> pd.DataFrame:
     rows: list[dict] = []
@@ -14,15 +51,15 @@ def normalize_json(data: dict) -> pd.DataFrame:
         for value in attributes.values():
             row[value['NAME']] = value['VALUE']
         rows.append(row)
-    rows = pd.DataFrame(rows)
-    return rows
+    normalized_data = pd.DataFrame(rows)
+    return normalized_data
 
 
 def collect_raw_data():
     load_dotenv()
     API_URL = getenv("API_URL")
     LIMIT = 2000
-    MAX_PAGE = 200
+    MAX_PAGE = 5
     MAX_RETRIES = 3
     RETRY_CODES = [
         HTTPStatus.TOO_MANY_REQUESTS,
@@ -63,6 +100,7 @@ def collect_raw_data():
 
 
 def get_site_prices() -> pd.DataFrame:
-    site_prices: dict[dict] = collect_raw_data()   
+    site_prices: dict[dict] = collect_raw_data()
     site_prices: pd.DataFrame = normalize_json(site_prices)
+    site_prices: pd.DataFrame = clean_data(site_prices)
     return site_prices
