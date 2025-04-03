@@ -10,7 +10,6 @@ from icecream import ic
 
 
 def clean_data(data: pd.DataFrame) -> pd.DataFrame:
-    data.to_excel("raw_site_data.xlsx", index=False, engine="xlsxwriter")
     data[
             ["Высота, мм", 
             "Ширина, мм", 
@@ -59,7 +58,7 @@ def collect_raw_data():
     load_dotenv()
     API_URL = getenv("API_URL")
     LIMIT = 2000
-    MAX_PAGE = 5
+    MAX_PAGE = 100
     MAX_RETRIES = 3
     RETRY_CODES = [
         HTTPStatus.TOO_MANY_REQUESTS,
