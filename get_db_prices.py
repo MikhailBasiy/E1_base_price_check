@@ -4,14 +4,21 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 
+from icecream import ic
+
 
 def clean_data(data: pd.DataFrame) -> pd.DataFrame:
+    ic("Data cleansing started")
     data['Наименование шкафа на сайте'] = data['Наименование шкафа на сайте'] \
         .str.replace('2-дверный', '2-х дверный') \
+        .str.replace('3-дверный', '3-х дверный') \
         .str.replace('Комби (Стекло белое/Стекло черное)', '(Белое стекло, Черное стекло)') \
         .str.replace('Комби (Стекло черное/Стекло белое)', '(Черное стекло, Белое стекло)')
     data['Цвет профиля'] = data['Цвет профиля'] \
-        .str.replace(' профиль', '')       
+        .str.replace(' профиль', '') 
+    data['Вариант исполнения шкафа'] = data['Вариант исполнения шкафа'] \
+        .str.replace("Дуб бардолино", "Дуб Бардолино") \
+        .str.replace("Дуб табачный", "Крафт табачный")      
     ### Prime
     data.loc[
         (   (data['Серия'] == 'Прайм') & \
@@ -24,6 +31,10 @@ def clean_data(data: pd.DataFrame) -> pd.DataFrame:
         ),
         'Компановка корпуса'] = "Прайм 3х"
     ### Ekspress
+    mask = (data['Наименование шкафа на сайте'].str.contains(" 2 ")) & (data['Серия'] == "Экспресс")
+    data.loc[mask, 'Наименование шкафа на сайте'] = \
+        data.loc[mask, 'Наименование шкафа на сайте'].str.replace(' 2 ', ' ')
+        
     data.loc[
         (   (data['Серия'] == 'Экспресс') & \
             (data['Глубина'] == 600) & \
@@ -72,6 +83,7 @@ def clean_data(data: pd.DataFrame) -> pd.DataFrame:
             (data['Тип_шкафа'] == '3-х дверный купе')
         ),
         'Компановка корпуса'] = "Эста 3х"
+    ic("Data cleansing finished")
     return data
 
 
@@ -98,6 +110,7 @@ def get_db_prices() -> pd.DataFrame:
         "FROM [Результат_Стоимость_шкафов_CSKU]"
     engine = get_engine()
     with engine.connect() as con:
+        ic("Make db query")
         return clean_data(pd.read_sql(query, con))
     
 
