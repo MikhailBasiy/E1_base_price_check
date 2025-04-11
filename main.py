@@ -6,7 +6,9 @@ from get_db_prices import get_db_prices
 
 
 def compare_prices(data: pd.DataFrame) -> pd.DataFrame:
+    data.dropna(subset="Наименование шкафа на сайте", inplace=True)
     data["Цены_равны"] = data["Розница Москва Скид"] == data["Sum-База_РРЦ"]
+    data = data[~data["Цены_равны"]]
     return data
 
 
@@ -50,4 +52,4 @@ if __name__ == "__main__":
     joined_data = join_prices(site_prices, db_prices)
     joined_data.to_excel("joined_data.xlsx", engine="xlsxwriter", index=False)
     compared_prices = compare_prices(joined_data)
-    compared_prices = pd.to_excel("compared_prices", index=False, engine="xlsxwriter")
+    compared_prices.to_excel("compared_prices.xlsx", index=False, engine="xlsxwriter")
