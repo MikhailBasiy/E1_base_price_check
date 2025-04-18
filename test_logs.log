@@ -1,0 +1,4 @@
+2025-04-18 12:21:42,651 - DEBUG - data is being collected...
+2025-04-18 12:22:42,332 - DEBUG - data successfully collected using API
+2025-04-18 12:22:42,333 - DEBUG - start normalizing data
+2025-04-18 12:22:42,551 - DEBUG - normalized data len is: 49686
