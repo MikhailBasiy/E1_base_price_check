@@ -1,4 +1,4 @@
-2025-04-18 12:21:42,651 - DEBUG - data is being collected...
-2025-04-18 12:22:42,332 - DEBUG - data successfully collected using API
-2025-04-18 12:22:42,333 - DEBUG - start normalizing data
-2025-04-18 12:22:42,551 - DEBUG - normalized data len is: 49686
+2025-04-18 12:49:02,900 - DEBUG - start writing to db
+2025-04-18 12:52:17,472 - DEBUG - Writing to db finished. Successfully loaded 49686 rows.
+12:49:02,560 - DEBUG - start normalizing data
+2025-04-18 12:49:02,754 - DEBUG - normalized data len is: 49686

@@ -1,8 +1,8 @@
+from os import getenv
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
-
-from os import getenv
-from dotenv import load_dotenv
 
 
 def get_engine() -> Engine:
@@ -13,7 +13,7 @@ def get_engine() -> Engine:
     DB_PASSWORD = getenv("DB_PASSWORD")
 
     engine = create_engine(
-        f"mssql+pyodbc://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/" \
+        f"mssql+pyodbc://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/"
         f"{DB_NAME}?driver=ODBC+Driver+17+for+SQL+Server"
     )
     return engine
