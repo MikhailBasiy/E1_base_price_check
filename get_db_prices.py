@@ -107,7 +107,7 @@ def get_db_prices() -> pd.DataFrame:
         "[Sum-База_РРЦ], [Sum-Сибирь_РРЦ] "
         "FROM [Результат_Стоимость_шкафов_CSKU]"
     )
-    engine = get_engine()
+    engine = get_engine("Access")
     with engine.connect() as con:
         ic("Make db query")
         return clean_data(pd.read_sql(query, con))

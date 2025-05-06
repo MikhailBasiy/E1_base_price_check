@@ -1,8 +1,9 @@
+from decimal import Decimal
+
 import pandas as pd
-from sqlalchemy import NVARCHAR, DECIMAL, Integer, text
+from sqlalchemy import DECIMAL, NVARCHAR, Integer, text
 
 from db_engine import get_engine
-from decimal import Decimal
 from logging_settings import get_logger
 
 logger = get_logger(__name__)
@@ -38,7 +39,7 @@ def write_to_db(data: pd.DataFrame) -> None:
         "admin_url": NVARCHAR(255),
     }
     logger.debug(f"start writing to db")
-    engine = get_engine()
+    engine = get_engine("E-COM")
     try:
         with engine.begin() as con:
             con.execute(text("DELETE FROM Результат_Стоимость_шкафов_Сайт_по_API"))
@@ -50,7 +51,7 @@ def write_to_db(data: pd.DataFrame) -> None:
                 index=False,
                 dtype=column_types,
                 chunksize=500,
-                method=None
+                method=None,
             )
     except Exception as e:
         print(e)

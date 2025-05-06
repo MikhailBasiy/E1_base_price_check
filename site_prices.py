@@ -31,7 +31,9 @@ def clean_data(data: pd.DataFrame) -> pd.DataFrame:
             "Розница Москва Скид",
             "Розница Сибирь Скид",
         ]
-    ].fillna(0)
+    ].fillna(
+        0
+    )
 
     data = data.astype(  ### walkaround for ValueError: invalid literal for int() with base 10
         {
