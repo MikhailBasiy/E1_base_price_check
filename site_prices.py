@@ -31,9 +31,7 @@ def clean_data(data: pd.DataFrame) -> pd.DataFrame:
             "Розница Москва Скид",
             "Розница Сибирь Скид",
         ]
-    ].fillna(
-        0
-    )
+    ].fillna(0)
 
     data = data.astype(  ### walkaround for ValueError: invalid literal for int() with base 10
         {
@@ -74,7 +72,7 @@ def collect_raw_data():
     load_dotenv()
     API_URL = getenv("API_URL")
     LIMIT = 2000
-    MAX_PAGE = 100
+    MAX_PAGE = 2
     MAX_RETRIES = 3
     RETRY_CODES = [
         HTTPStatus.TOO_MANY_REQUESTS,
@@ -116,9 +114,9 @@ def collect_raw_data():
     return collected_data
 
 
-def get_site_prices() -> pd.DataFrame:
+def update_db_site_prices() -> None:
     site_prices: dict[dict] = collect_raw_data()
     site_prices: pd.DataFrame = normalize_json(site_prices)
-    write_to_db(site_prices)
     site_prices: pd.DataFrame = clean_data(site_prices)
-    return site_prices
+    write_to_db(site_prices)
+    return
