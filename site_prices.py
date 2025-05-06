@@ -10,6 +10,7 @@ from requests.exceptions import HTTPError
 
 from logging_settings import get_logger
 from write_to_db import write_to_db
+from db_engine import get_engine
 
 logger = get_logger(__name__)
 
@@ -74,7 +75,7 @@ def collect_raw_data():
     load_dotenv()
     API_URL = getenv("API_URL")
     LIMIT = 2000
-    MAX_PAGE = 2
+    MAX_PAGE = 100
     MAX_RETRIES = 3
     RETRY_CODES = [
         HTTPStatus.TOO_MANY_REQUESTS,
@@ -122,3 +123,9 @@ def update_db_site_prices() -> None:
     site_prices: pd.DataFrame = clean_data(site_prices)
     write_to_db(site_prices)
     return
+
+
+def get_db_site_prices() -> pd.DataFrame:
+    engine = get_engine("E-COM")
+    with engine.connect() as con:
+        return pd.read_sql("Результат_Стоимость_шкафов_Сайт_по_API", con=con)

@@ -43,16 +43,16 @@ def write_to_db(data: pd.DataFrame) -> None:
     try:
         with engine.begin() as con:
             con.execute(text("DELETE FROM Результат_Стоимость_шкафов_Сайт_по_API"))
-            data.to_sql(
-                name="Результат_Стоимость_шкафов_Сайт_по_API",
-                schema="dbo",
-                con=con,
-                if_exists="append",
-                index=False,
-                dtype=column_types,
-                chunksize=500,
-                method=None,
-            )
+        data.to_sql(
+            name="Результат_Стоимость_шкафов_Сайт_по_API",
+            schema="dbo",
+            con=engine,
+            if_exists="append",
+            index=False,
+            dtype=column_types,
+            chunksize=500,
+            method=None,
+        )
     except Exception as e:
         print(e)
         raise
