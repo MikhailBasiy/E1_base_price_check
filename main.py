@@ -1,9 +1,9 @@
 import pandas as pd
 from icecream import ic
 
-from get_db_prices import get_db_prices
-from site_prices import update_db_site_prices, get_db_site_prices
 from compare_prices import compare_prices
+from get_db_prices import get_db_prices
+from site_prices import get_db_site_prices, update_db_site_prices
 
 
 def main():
