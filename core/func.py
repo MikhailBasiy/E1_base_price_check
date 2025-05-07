@@ -19,4 +19,3 @@ def check_base_prices():
 
 def update_base_prices_in_db() -> int:
     return update_db_site_prices()
-
