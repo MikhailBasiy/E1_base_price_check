@@ -15,3 +15,8 @@ def check_base_prices():
     compared_prices = compare_prices(site_prices, db_prices)
     # compared_prices.to_excel("compared_prices.xlsx", index=False, engine="xlsxwriter")
     return compared_prices
+
+
+def update_base_prices_in_db() -> int:
+    return update_db_site_prices()
+

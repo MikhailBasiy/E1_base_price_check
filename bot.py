@@ -10,7 +10,7 @@ from aiogram.types import (BufferedInputFile, CallbackQuery,
                            InlineKeyboardButton, InlineKeyboardMarkup, Message)
 from dotenv import load_dotenv
 
-from core.func import check_base_prices
+from core.func import check_base_prices, update_base_prices_in_db
 
 dp = Dispatcher()
 router = Router()
@@ -24,6 +24,12 @@ async def show_menu(message: Message):
                 InlineKeyboardButton(
                     text="Провести сбор и сверку базовых цен",
                     callback_data="check_base_prices",
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Обновить базовые цены в БД",
+                    callback_data="update_base_prices_in_db",
                 )
             ],
             [
@@ -64,6 +70,18 @@ async def check_base_prices_handler(callback=CallbackQuery):
         buffer.read(), filename="Результат проверки базовых цен.xlsx"
     )
     await callback.message.answer_document(file)
+
+
+@router.callback_query(F.data == "update_base_prices_in_db")
+async def update_base_prices_in_db_handler(callback=CallbackQuery):
+    await callback.answer(
+        "🔄 Сбор цен с сайта по API запущен..."
+    )
+    loop = asyncio.get_running_loop()
+    prices_qty = await loop.run_in_executor(None, update_base_prices_in_db)
+    await callback.message.answer(
+        f"✅ Базовые цены в БД успешно обновлены. Записано строк:{prices_qty}."
+    )
 
 
 async def main() -> None:

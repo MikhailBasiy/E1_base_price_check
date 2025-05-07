@@ -178,12 +178,12 @@ def collect_raw_data():
     return collected_data
 
 
-def update_db_site_prices() -> None:
+def update_db_site_prices() -> int:
     site_prices: dict[dict] = collect_raw_data()
     site_prices: pd.DataFrame = normalize_json(site_prices)
     site_prices: pd.DataFrame = clean_data(site_prices)
     write_to_db(site_prices)
-    return
+    return len(site_prices)
 
 
 def get_db_site_prices() -> pd.DataFrame:
