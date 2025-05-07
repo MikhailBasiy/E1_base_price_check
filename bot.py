@@ -41,7 +41,7 @@ async def command_start_handler(message: Message) -> None:
     await message.answer(f"Привет, {html.bold(message.from_user.first_name)}! Начнем?")
     await show_menu(message)
 
-@router.message(F.text == "/menu")
+
 @router.message()
 async def any_text_handler(message: Message) -> None:
     # await message.answer(f"")
