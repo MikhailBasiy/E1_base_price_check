@@ -51,7 +51,11 @@ def write_to_db(data: pd.DataFrame) -> None:
         with engine.connect() as con:
             while True:
                 with con.begin():
-                    result = con.execute(text("DELETE TOP(1000) FROM Результат_Стоимость_шкафов_Сайт_по_API"))
+                    result = con.execute(
+                        text(
+                            "DELETE TOP(1000) FROM Результат_Стоимость_шкафов_Сайт_по_API"
+                        )
+                    )
                     if result.rowcount == 0:
                         break
 
