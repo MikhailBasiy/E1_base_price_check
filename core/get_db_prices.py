@@ -1,7 +1,7 @@
 import pandas as pd
 from icecream import ic
 
-from db_engine import get_engine
+from core.db_engine import get_engine
 
 
 def clean_data(data: pd.DataFrame) -> pd.DataFrame:

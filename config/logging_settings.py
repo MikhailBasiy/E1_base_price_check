@@ -12,7 +12,7 @@ def get_logger(name: str) -> logging.Logger:
         ch.setLevel(logging.DEBUG)
         ch.setFormatter(formatter)
 
-        fh = logging.FileHandler("test_logs.log", mode="w", encoding="utf-8")
+        fh = logging.FileHandler("logs/test_logs.log", mode="w", encoding="utf-8")
         fh.setLevel(logging.DEBUG)
         fh.setFormatter(formatter)
         logger.addHandler(ch)

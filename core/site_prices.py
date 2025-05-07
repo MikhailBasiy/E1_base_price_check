@@ -10,8 +10,8 @@ from icecream import ic
 from requests.exceptions import HTTPError
 from sqlalchemy import DECIMAL, NVARCHAR, Integer, text
 
-from db_engine import get_engine
-from logging_settings import get_logger
+from config.logging_settings import get_logger
+from core.db_engine import get_engine
 
 logger = get_logger(__name__)
 
